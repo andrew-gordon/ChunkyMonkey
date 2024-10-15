@@ -10,7 +10,7 @@
 	  <IsRoslynComponent>true</IsRoslynComponent>
 
 	<PackageId>GordoSoft.ChunkyMonkey</PackageId>
-	<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<Version>1.0.0</Version>
 	<Authors>Andrew Gordon</Authors>
 	<Description>ChunkyMonkey is a C# Code Generator to split a class containing list, array, collection or dictionary properties into chunks. It also provides the ability to merge the chunks back into a single instance.</Description>
@@ -27,10 +27,6 @@
     </contentFiles>
 </PropertyGroup>
 
-	<Target Name="CopyLibraryBDll" AfterTargets="Build">
-		<Copy SourceFiles="$(OutputPath)\ChunkyMonkey.Attributes.dll" DestinationFolder="$(OutputPath)" />
-	</Target>
-	
   <ItemGroup>
     <None Include="..\..\README.md" Pack="true" PackagePath="/">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

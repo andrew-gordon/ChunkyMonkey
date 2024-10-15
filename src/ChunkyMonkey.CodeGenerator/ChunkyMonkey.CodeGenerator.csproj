@@ -8,11 +8,9 @@
 	  <LangVersion>Latest</LangVersion>
 	  <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 	  <IsRoslynComponent>true</IsRoslynComponent>
-  </PropertyGroup>
 
-<PropertyGroup>
 	<PackageId>GordoSoft.ChunkyMonkey</PackageId>
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 	<Version>1.0.0</Version>
 	<Authors>Andrew Gordon</Authors>
 	<Description>ChunkyMonkey is a C# Code Generator to split a class containing list, array, collection or dictionary properties into chunks. It also provides the ability to merge the chunks back into a single instance.</Description>

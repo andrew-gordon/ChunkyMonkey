@@ -15,11 +15,11 @@ Imagine you have a class like this:
 ```csharp
 public class CreateUserRequest
 {
-public string Username { get; set; }
-public DateTime DateOfBirth { get; set; }	
-public List<int> FavouriteNumbers { get; set; }
-public string[] FavouriteFilms { get; set; }
-public Dictionary<string, string> Attributes { get; set; }
+	public string Username { get; set; }
+	public DateTime DateOfBirth { get; set; }	
+	public List<int> FavouriteNumbers { get; set; }
+	public string[] FavouriteFilms { get; set; }
+	public Dictionary<string, string> Attributes { get; set; }
 }
 ```
 

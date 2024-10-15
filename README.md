@@ -88,7 +88,7 @@ _Chunk #3_
 | DateOfBirth | `1/2/1975` |
 | FavouriteNumbers | `[7]` |
 | FavouriteFilms | `[]` || 
-| Attributes | ``` { ``` <br> ``` } ``` |
+| Attributes | ``` { } ``` |
 
 ## ``T MergeChunks(IEnumerable<T> chunks)``
 

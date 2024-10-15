@@ -30,8 +30,8 @@ jobs:
       run: dotnet test --no-build --verbosity normal      
     # - name: Pack the project with Nerdbank.GitVersioning version
     #   run: dotnet pack --configuration Release
-    - name: Pack the project
-      run: dotnet pack "./src/ChunkyMonkey.CodeGenerator/ChunkyMonkey.CodeGenerator.csproj" --configuration Release
+    # - name: Pack the project
+    #   run: dotnet pack "./src/ChunkyMonkey.CodeGenerator/ChunkyMonkey.CodeGenerator.csproj" --configuration Release
     - name: Publish NuGet package
       if: github.ref == 'refs/heads/main'
-      run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push **/ChunkyMonkey.CodeGenerator.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json

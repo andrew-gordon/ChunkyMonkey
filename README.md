@@ -27,9 +27,8 @@ If the user has a lot of favourite numbers, films and attributes, you may want t
 
 **ChunkyMonkey** generates two methods within partial classes, where _T_ is the name of the class. 
 
-:::note Note
-The method isn't generic. The generated code contains the actual class type rather than _T_)
-:::
+	> [!NOTE]  
+	> The method isn't generic. The generated code contains the actual class type rather than _T_)
 
 ``` csharp 
 public IEnumerable<T> Chunk(int chunkSize)

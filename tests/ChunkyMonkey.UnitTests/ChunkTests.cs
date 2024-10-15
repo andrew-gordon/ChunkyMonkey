@@ -135,7 +135,6 @@ namespace ChunkyMonkey.UnitTests
                     { "Favourite Colour", "Red" },
                     { "Favourite Biscuit", "Custard Cream" }
                 }
-
             };
 
             int chunkSize = 3;

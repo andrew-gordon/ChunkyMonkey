@@ -25,6 +25,6 @@
 	  <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ChunkyMonkey\ChunkyMonkey.Attributes\ChunkyMonkey.Attributes.csproj" />
+    <ProjectReference Include="..\ChunkyMonkey.Attributes\ChunkyMonkey.Attributes.csproj" />
   </ItemGroup>
 </Project>

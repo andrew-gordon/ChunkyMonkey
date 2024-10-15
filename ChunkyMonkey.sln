@@ -5,9 +5,9 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChunkyMonkey.UnitTests", "tests\ChunkyMonkey.UnitTests\ChunkyMonkey.UnitTests.csproj", "{DAA717C2-305A-490B-BEE3-71BB0D4740E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChunkyMonkey.CodeGenerator", "ChunkyMonkey.CodeGenerator\ChunkyMonkey.CodeGenerator.csproj", "{57F97368-CD44-4ABC-B103-98F469E78269}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChunkyMonkey.CodeGenerator", "src\ChunkyMonkey.CodeGenerator\ChunkyMonkey.CodeGenerator.csproj", "{57F97368-CD44-4ABC-B103-98F469E78269}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChunkyMonkey.Attributes", "..\src\ChunkyMonkey\ChunkyMonkey.Attributes\ChunkyMonkey.Attributes.csproj", "{F4AD5AE2-B0C5-4820-9C1B-82A474AF5FA7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChunkyMonkey.Attributes", "src\ChunkyMonkey.Attributes\ChunkyMonkey.Attributes.csproj", "{F4AD5AE2-B0C5-4820-9C1B-82A474AF5FA7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E56165E0-A996-478A-91E3-F4C19F259FE1}"
 	ProjectSection(SolutionItems) = preProject

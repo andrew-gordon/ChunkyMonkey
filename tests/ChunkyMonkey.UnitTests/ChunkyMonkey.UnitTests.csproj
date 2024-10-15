@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\ChunkyMonkey\ChunkyMonkey.Attributes\ChunkyMonkey.Attributes.csproj" />
-    <ProjectReference Include="..\..\ChunkyMonkey.CodeGenerator\ChunkyMonkey.CodeGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\src\ChunkyMonkey.Attributes\ChunkyMonkey.Attributes.csproj" />
+    <ProjectReference Include="..\..\src\ChunkyMonkey.CodeGenerator\ChunkyMonkey.CodeGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup>

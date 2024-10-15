@@ -73,7 +73,7 @@ _Chunk #2_
 
 | Property | Value |
 |--------|----------------|
-| Username | 'bob' | 
+| Username | `'bob'` | 
 | DateOfBirth | `1/2/1975` |
 | FavouriteNumbers | `[4, 5, 6]` |
 | FavouriteFilms | `['Ferris Bueller’s Day Off', 'Ghostbusters']` |

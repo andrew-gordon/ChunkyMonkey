@@ -67,7 +67,7 @@ _Chunk #1_
 | DateOfBirth | `1/2/1975` |
 | FavouriteNumbers | `[1, 2, 3]` |
 | FavouriteFilms | `['E.T.', 'Flight of the Navigator', 'Weird Science']` |
-| Attributes | {<br>&nbsp;&nbsp;&nbsp;&nbsp;'Eye Colour': 'Blue'<br>&nbsp;&nbsp;&nbsp;&nbsp;'Hair Colour': 'Brown'<br>&nbsp;&nbsp;&nbsp;&nbsp;'Height (cm)': '180'<br>&nbsp;&nbsp;&nbsp;&nbsp;'First Language': 'English'<br>}
+| Attributes | {<br>&nbsp;&nbsp;&nbsp;&nbsp;'Eye Colour': 'Blue'<br>&nbsp;&nbsp;&nbsp;&nbsp;'Hair Colour': 'Brown'<br>&nbsp;&nbsp;&nbsp;&nbsp;'Height (cm)': '180'<br>} |
 
 _Chunk #2_
 
@@ -77,7 +77,7 @@ _Chunk #2_
 | DateOfBirth | `1/2/1975` |
 | FavouriteNumbers | `[4, 5, 6]` |
 | FavouriteFilms | `['Ferris Bueller’s Day Off', 'Ghostbusters']` |
-| Attributes | {<br>&nbsp;&nbsp;&nbsp;&nbsp;'Eye Colour': 'Blue'<br>&nbsp;&nbsp;&nbsp;&nbsp;'Hair Colour': 'Brown'<br>&nbsp;&nbsp;&nbsp;&nbsp;'Height (cm)': '180'<br>&nbsp;&nbsp;&nbsp;&nbsp;'First Language': 'English'<br>}
+| Attributes | {<br>&nbsp;&nbsp;&nbsp;&nbsp;'First Language': 'English'<br>} |
 
 _Chunk #3_
 
@@ -86,7 +86,8 @@ _Chunk #3_
 | Username | `'bob'` | 
 | DateOfBirth | `1/2/1975` |
 | FavouriteNumbers | `[7]` |
-| FavouriteFilms | `[]` || Attributes | {<br>&nbsp;&nbsp;&nbsp;&nbsp;'Eye Colour': 'Blue'<br>&nbsp;&nbsp;&nbsp;&nbsp;'Hair Colour': 'Brown'<br>&nbsp;&nbsp;&nbsp;&nbsp;'Height (cm)': '180'<br>&nbsp;&nbsp;&nbsp;&nbsp;'First Language': 'English'<br>}
+| FavouriteFilms | `[]` || 
+| Attributes | { } |
 
 ## ``T MergeChunks(IEnumerable<T> chunks)``
 

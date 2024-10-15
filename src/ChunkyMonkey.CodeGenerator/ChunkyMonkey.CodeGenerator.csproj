@@ -34,7 +34,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
 	<None Include="$(OutputPath)\ChunkyMonkey.CodeGenerator.dll" Pack="true" PackagePath="analyzers/dotnet/cs" />
-	  <None Include="$(OutputPath)\ChunkyMonkey.Attributes.dll" Pack="true" PackagePath="analyzers/dotnet/cs" />
+	<None Include="$(OutputPath)\ChunkyMonkey.Attributes.dll" Pack="true" PackagePath="analyzers/dotnet/cs" />
   </ItemGroup>
 
 

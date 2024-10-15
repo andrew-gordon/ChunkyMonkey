@@ -6,7 +6,7 @@ namespace ChunkyMonkey.UnitTests
     public partial class MergeChunksTests
     {
         [Fact]
-        public void MergeChunks_ArrayProperties_ReturnsChunkedInstances()
+        public void MergeChunks_ArrayProperty_ReturnsChunkedInstances()
         {
             // Arrange
             var chunks = new List<ClassWithArrayProperty>
@@ -55,6 +55,58 @@ namespace ChunkyMonkey.UnitTests
             Assert.Equal(expected.Age, actual.Age);
             Assert.True(expected.Numbers.SequenceEqual(actual.Numbers));
         }
+
+        //[Fact]
+        //public void MergeChunks_NullableArrayProperty_ReturnsChunkedInstances()
+        //{
+        //    // Arrange
+        //    var chunks = new List<ClassWithNullableArrayProperty>
+        //    {
+        //        new() {
+        //            Name = "John",
+        //            Age = 25,
+        //            Numbers = [1, 2, 3]
+        //        },
+        //        new() {
+        //            Name = "John",
+        //            Age = 25,
+        //            Numbers = [4, 5, 6]
+        //        },
+        //        new() {
+        //            Name = "John",
+        //            Age = 25,
+        //            Numbers = [7, 8, 9]
+        //        },
+        //        new() {
+        //            Name = "John",
+        //            Age = 25,
+        //            Numbers = [10]
+        //        },
+
+        //        // This chunk wouldn't be emitted by the generator, but checking it for completeness.
+        //        new() {
+        //            Name = "John",
+        //            Age = 25,
+        //            Numbers = []
+        //        }
+        //    };
+
+        //    // Act
+        //    var actual = ClassWithNullableArrayProperty.MergeChunks(chunks);
+
+        //    var expected = new ClassWithArrayProperty
+        //    {
+        //        Name = "John",
+        //        Age = 25,
+        //        Numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        //    };
+
+        //    // Assert
+        //    Assert.Equal(expected.Name, actual.Name);
+        //    Assert.Equal(expected.Age, actual.Age);
+        //    Assert.NotNull(actual.Numbers);
+        //    Assert.True(expected.Numbers.SequenceEqual(actual.Numbers));
+        //}
 
         [Fact]
         public void MergeChunks_MulitpleCollectionProperties_ReturnsChunkedInstances()

@@ -9,6 +9,10 @@ namespace ChunkyMonkey.CodeGenerator
     [Generator(LanguageNames.CSharp)]
     public class ChunkyMonkeyGenerator : IIncrementalGenerator
     {
+        /// <summary>
+        /// Initializes the ChunkyMonkeyGenerator.
+        /// </summary>
+        /// <param name="context">The IncrementalGeneratorInitializationContext.</param>
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
             //System.Diagnostics.Debugger.Launch();
@@ -59,34 +63,41 @@ namespace ChunkyMonkey.CodeGenerator
             typeRules.AddRange(
                 [
                     new TypeRule(
-                        name: "List",
-                        typeMatcher: propertyName => propertyName.StartsWith("List<"),
-                        lengthPropertyName: "Count",
-                        chunkCodeFactory: chunkCodeFactory.ForListProperty,
-                        MergeChunksCodeFactory: MergeChunksCodeFactory.ForListProperty,
-                        newInstance: pi => $"new {pi.TypeName}()"),
-                    new TypeRule(
-                        name: "Collection",
-                        typeMatcher: propertyType => propertyType.StartsWith("Collection<"),
-                        lengthPropertyName: "Count",
-                        chunkCodeFactory: chunkCodeFactory.ForCollectionProperty,
-                        MergeChunksCodeFactory: MergeChunksCodeFactory.ForCollectionProperty,
-                        newInstance: pi => $"new {pi.TypeName}()"),
-                    new TypeRule(
-                        name: "Dictionary",
-                        typeMatcher: propertyName => propertyName.StartsWith("Dictionary<"),
-                        lengthPropertyName: "Count",
-                        chunkCodeFactory: chunkCodeFactory.ForDictionaryProperty,
-                        MergeChunksCodeFactory: MergeChunksCodeFactory.ForDictionaryProperty,
-                        newInstance: pi => $"new {pi.TypeName}()"),
-                    new TypeRule(
-                        name: "Array",
-                        typeMatcher: propertyName => propertyName.EndsWith("[]"),
-                        lengthPropertyName: "Length",
-                        chunkCodeFactory: chunkCodeFactory.ForArrayProperty,
-                        MergeChunksCodeFactory: MergeChunksCodeFactory.ForArrayProperty,
-                        newInstance: pi => $"Array.Empty<{pi.ArrayElementType}>()"),
-                ]
+                                    name: "List",
+                                    typeMatcher: propertyName => propertyName.StartsWith("List<"),
+                                    lengthPropertyName: "Count",
+                                    chunkCodeFactory: chunkCodeFactory.ForListProperty,
+                                    MergeChunksCodeFactory: MergeChunksCodeFactory.ForListProperty,
+                                    newInstance: pi => $"new {pi.TypeName}()"),
+                                new TypeRule(
+                                    name: "Collection",
+                                    typeMatcher: propertyType => propertyType.StartsWith("Collection<"),
+                                    lengthPropertyName: "Count",
+                                    chunkCodeFactory: chunkCodeFactory.ForCollectionProperty,
+                                    MergeChunksCodeFactory: MergeChunksCodeFactory.ForCollectionProperty,
+                                    newInstance: pi => $"new {pi.TypeName}()"),
+                                new TypeRule(
+                                    name: "Dictionary",
+                                    typeMatcher: propertyName => propertyName.StartsWith("Dictionary<"),
+                                    lengthPropertyName: "Count",
+                                    chunkCodeFactory: chunkCodeFactory.ForDictionaryProperty,
+                                    MergeChunksCodeFactory: MergeChunksCodeFactory.ForDictionaryProperty,
+                                    newInstance: pi => $"new {pi.TypeName}()"),
+                                new TypeRule(
+                                    name: "Array",
+                                    typeMatcher: propertyName => propertyName.EndsWith("[]"),
+                                    lengthPropertyName: "Length",
+                                    chunkCodeFactory: chunkCodeFactory.ForArrayProperty,
+                                    MergeChunksCodeFactory: MergeChunksCodeFactory.ForArrayProperty,
+                                    newInstance: pi => $"Array.Empty<{pi.ArrayElementType}>()"),
+                                //new TypeRule(
+                                //    name: "Array",
+                                //    typeMatcher: propertyName => propertyName.EndsWith("[]?"),
+                                //    lengthPropertyName: "Length",
+                                //    chunkCodeFactory: chunkCodeFactory.ForNullableArrayProperty,
+                                //    MergeChunksCodeFactory: MergeChunksCodeFactory.ForNullableArrayProperty,
+                                //    newInstance: pi => $"Array.Empty<{pi.ArrayElementType}?>()"),
+                            ]
              );
 
             var sb = new StringBuilder();
@@ -104,6 +115,11 @@ namespace ChunkyMonkey.CodeGenerator
             sb.AppendLine($"    public partial class {className}");
             sb.AppendLine("    {");
 
+            sb.AppendLine("        /// <summary>");
+            sb.AppendLine("        /// Chunks the instance into multiple instances based on the specified chunk size.");
+            sb.AppendLine("        /// </summary>");
+            sb.AppendLine("        /// <param name=\"chunkSize\">The size of each chunk.</param>");
+            sb.AppendLine("        /// <returns>An enumerable of chunked instances.</returns>");
             sb.AppendLine("        public IEnumerable<" + className + "> Chunk(int chunkSize)");
             sb.AppendLine("        {");
 
@@ -162,6 +178,15 @@ namespace ChunkyMonkey.CodeGenerator
             sb.AppendLine($"        }}");
             sb.AppendLine("");
 
+
+
+            // Code to merge chunks
+
+            sb.AppendLine($"        /// <summary>");
+            sb.AppendLine($"        /// Merges the specified chunks into a single instance.");
+            sb.AppendLine($"        /// </summary>");
+            sb.AppendLine($"        /// <param name=\"chunks\">The chunks to merge.</param>");
+            sb.AppendLine($"        /// <returns>The merged instance.</returns>");
             sb.AppendLine($"        public static {className} MergeChunks(IEnumerable<{className}> chunks)");
             sb.AppendLine($"        {{");
             sb.AppendLine($"            var instance = new {className}();");
@@ -205,15 +230,27 @@ namespace ChunkyMonkey.CodeGenerator
 
         private PropertyInfo GetPropertyInfo(PropertyDeclarationSyntax property)
         {
-            var syntax = property.Type as ArrayTypeSyntax;
             bool isArray = false;
-
             string? arrayElementType = null;
 
-            if (syntax is not null)
+            if (property.Type is NullableTypeSyntax nullableTypeSyntax)
             {
-                isArray = true;
-                arrayElementType = syntax.ElementType.ToString();
+                // Check if the underlying type is an array type
+                if (nullableTypeSyntax.ElementType is ArrayTypeSyntax arrayType)
+                {
+                    isArray = true;
+                    arrayElementType = arrayType.ElementType.ToString();
+                }
+            }
+            else
+            {
+                var syntax = property.Type as ArrayTypeSyntax;
+
+                if (syntax is not null)
+                {
+                    isArray = true;
+                    arrayElementType = syntax.ElementType.ToString();
+                }
             }
 
             var p = new PropertyInfo
@@ -225,179 +262,6 @@ namespace ChunkyMonkey.CodeGenerator
             };
 
             return p;
-        }
-
-        internal class ChunkCodeFactory
-        {
-            internal string ForArrayProperty(PropertyInfo propertyInfo, TypeRule _)
-            {
-                //var newInstanceCommand = typeRule.NewInstance(propertyInfo);
-
-                var sb = new StringBuilder();
-                sb.AppendLine($"                {{");
-                sb.AppendLine($"                    if (this.{propertyInfo.Name} is not null)");
-                sb.AppendLine($"                    {{");
-                //sb.AppendLine($"                        if (instance.{propertyInfo.Name} is null)");
-                //sb.AppendLine($"                        {{");
-                //sb.AppendLine($"                            instance.{propertyInfo.Name} = {newInstanceCommand};");
-                //sb.AppendLine($"                        }}");
-
-                sb.AppendLine($"                        instance.{propertyInfo.Name} = this.{propertyInfo.Name}.Skip(i).Take(chunkSize).ToArray();");
-                sb.AppendLine($"                    }}");
-                sb.AppendLine($"                }}");
-                sb.AppendLine($"");
-                return sb.ToString();
-            }
-
-#pragma warning disable IDE0060 // Remove unused parameter
-            internal string ForDictionaryProperty(PropertyInfo propertyInfo, TypeRule typeRule)
-#pragma warning restore IDE0060 // Remove unused parameter
-            {
-                var sb = new StringBuilder();
-                sb.AppendLine($"                {{");
-                sb.AppendLine($"                    var dict = new {propertyInfo.TypeName}();");
-                sb.AppendLine($"");
-                sb.AppendLine($"                    if (this.{propertyInfo.Name} is not null)");
-                sb.AppendLine($"                    {{");
-                sb.AppendLine($"                        var chunkPairs = this.{propertyInfo.Name}.Skip(i).Take(chunkSize);");
-                sb.AppendLine($"                        foreach(var kvp in chunkPairs)");
-                sb.AppendLine($"                        {{");
-                sb.AppendLine($"                            dict.Add(kvp.Key, kvp.Value);");
-                sb.AppendLine($"                        }}");
-                sb.AppendLine($"                        instance.{propertyInfo.Name} = dict;");
-                sb.AppendLine($"                    }}");
-                sb.AppendLine($"                }}");
-                sb.AppendLine($"");
-                return sb.ToString();
-            }
-
-#pragma warning disable IDE0060 // Remove unused parameter
-            internal string ForCollectionProperty(PropertyInfo propertyInfo, TypeRule typeRule)
-#pragma warning restore IDE0060 // Remove unused parameter
-            {
-                return $"                instance.{propertyInfo.Name} = new {propertyInfo.TypeName}(this.{propertyInfo.Name}.Skip(i).Take(chunkSize).ToList());";
-            }
-
-#pragma warning disable IDE0060 // Remove unused parameter
-            internal string ForListProperty(PropertyInfo propertyInfo, TypeRule typeRule)
-#pragma warning restore IDE0060 // Remove unused parameter
-            {
-                return $"                instance.{propertyInfo.Name} = this.{propertyInfo.Name}.Skip(i).Take(chunkSize).ToList();";
-            }
-        }
-
-        internal class MergeChunksCodeFactory
-        {
-            internal string ForArrayProperty(PropertyInfo propertyInfo, TypeRule typeRule)
-            {
-                var newInstanceCommand = typeRule.NewInstance(propertyInfo); // .Replace("{typeName}", propertyInfo.TypeName).Replace("[][0]", "[0]");
-
-
-                var sb = new StringBuilder();
-                sb.AppendLine($"");
-                sb.AppendLine($"                if (chunk.{propertyInfo.Name} is not null)");
-                sb.AppendLine($"                {{");
-                sb.AppendLine($"                    if (instance.{propertyInfo.Name} is null)");
-                sb.AppendLine($"                    {{");
-                sb.AppendLine($"                        instance.{propertyInfo.Name} = {newInstanceCommand};");
-                sb.AppendLine($"                    }}");
-                sb.AppendLine($"");
-                sb.AppendLine($"                    instance.{propertyInfo.Name} = instance.{propertyInfo.Name}.Concat(chunk.{propertyInfo.Name}).ToArray();");
-                sb.AppendLine($"                }}");
-                return sb.ToString();
-            }
-
-#pragma warning disable IDE0060 // Remove unused parameter
-            internal string ForDictionaryProperty(PropertyInfo propertyInfo, TypeRule typeRule)
-#pragma warning restore IDE0060 // Remove unused parameter
-            {
-                var sb = new StringBuilder();
-                sb.AppendLine($"");
-                sb.AppendLine($"                if (chunk.{propertyInfo.Name} is not null)");
-                sb.AppendLine($"                {{");
-                sb.AppendLine($"                    if (instance.{propertyInfo.Name} is null)");
-                sb.AppendLine($"                    {{");
-                sb.AppendLine($"                        instance.{propertyInfo.Name} = new {propertyInfo.TypeName}();");
-                sb.AppendLine($"                    }}");
-                sb.AppendLine($"");
-                sb.AppendLine($"                    foreach(var kvp in chunk.{propertyInfo.Name})");
-                sb.AppendLine($"                    {{");
-                sb.AppendLine($"                        instance.{propertyInfo.Name}.Add( kvp.Key, kvp.Value);");
-                sb.AppendLine($"                    }}");
-                sb.AppendLine($"                }}");
-                return sb.ToString();
-            }
-
-#pragma warning disable IDE0060 // Remove unused parameter
-            internal string ForCollectionProperty(PropertyInfo propertyInfo, TypeRule typeRule)
-#pragma warning restore IDE0060 // Remove unused parameter
-            {
-                var sb = new StringBuilder();
-                sb.AppendLine($"");
-                sb.AppendLine($"                if (chunk.{propertyInfo.Name} is not null)");
-                sb.AppendLine($"                {{");
-                sb.AppendLine($"                    if (instance.{propertyInfo.Name} is null)");
-                sb.AppendLine($"                    {{");
-                sb.AppendLine($"                        instance.{propertyInfo.Name} = new {propertyInfo.TypeName}();");
-                sb.AppendLine($"                    }}");
-                sb.AppendLine($"");
-                sb.AppendLine($"                    if (chunk.{propertyInfo.Name} is not null)");
-                sb.AppendLine($"                    {{");
-                sb.AppendLine($"                        foreach(var value in chunk.{propertyInfo.Name})");
-                sb.AppendLine($"                        {{");
-                sb.AppendLine($"                            instance.{propertyInfo.Name}.Add(value);");
-                sb.AppendLine($"                        }}");
-                sb.AppendLine($"                    }}");
-                sb.AppendLine($"                }}");
-                return sb.ToString();
-            }
-
-#pragma warning disable IDE0060 // Remove unused parameter
-            internal string ForListProperty(PropertyInfo propertyInfo, TypeRule typeRule)
-#pragma warning restore IDE0060 // Remove unused parameter
-            {
-                var sb = new StringBuilder();
-                sb.AppendLine($"");
-                sb.AppendLine($"                if (chunk.{propertyInfo.Name} is not null)");
-                sb.AppendLine($"                {{");
-                sb.AppendLine($"                    if (instance.{propertyInfo.Name} is null)");
-                sb.AppendLine($"                    {{");
-                sb.AppendLine($"                        instance.{propertyInfo.Name} = new {propertyInfo.TypeName}();");
-                sb.AppendLine($"                    }}");
-                sb.AppendLine($"");
-                sb.AppendLine($"                    if (chunk.{propertyInfo.Name} is not null)");
-                sb.AppendLine($"                    {{");
-                sb.AppendLine($"                        foreach(var value in chunk.{propertyInfo.Name})");
-                sb.AppendLine($"                        {{");
-                sb.AppendLine($"                            instance.{propertyInfo.Name}.Add(value);");
-                sb.AppendLine($"                        }}");
-                sb.AppendLine($"                    }}");
-                sb.AppendLine($"                }}");
-                return sb.ToString();
-            }
-        }
-
-        internal class TypeRule(
-            string name, Func<string, bool> typeMatcher,
-            string lengthPropertyName,
-            Func<PropertyInfo, TypeRule, string> chunkCodeFactory,
-            Func<PropertyInfo, TypeRule, string> MergeChunksCodeFactory,
-            Func<PropertyInfo, string> newInstance)
-        {
-            public string Name { get; } = name;
-            public Func<string, bool> TypeMatcher { get; } = typeMatcher;
-            public string LengthPropertyName { get; } = lengthPropertyName;
-            public Func<PropertyInfo, TypeRule, string> ChunkCodeFactory { get; } = chunkCodeFactory;
-            public Func<PropertyInfo, TypeRule, string> MergeChunksCodeFactory { get; } = MergeChunksCodeFactory;
-            public Func<PropertyInfo, string> NewInstance { get; } = newInstance;
-        }
-
-        internal class PropertyInfo
-        {
-            public string? Name { get; set; }
-            public string? TypeName { get; set; }
-            public bool IsArray { get; set; }
-            public string? ArrayElementType { get; set; }
         }
     }
 }

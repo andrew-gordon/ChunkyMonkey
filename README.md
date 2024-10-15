@@ -55,7 +55,8 @@ public T MergeChunks(IEnumerable<T> chunks)
 | Username | `'bob'` | 
 | DateOfBirth | `1/2/1975` |
 | FavouriteNumbers | `[1, 2, 3, 4, 5, 6, 7]` |
-| FavouriteFilms | `['E.T.', 'Flight of the Navigator', 'Weird Science', 'Ferris Bueller’s Day Off', 'Ghostbusters']` || Attributes | {<br>&nbsp;&nbsp;&nbsp;&nbsp;'Eye Colour': 'Blue'<br>&nbsp;&nbsp;&nbsp;&nbsp;'Hair Colour': 'Brown'<br>&nbsp;&nbsp;&nbsp;&nbsp;'Height (cm)': '180'<br>&nbsp;&nbsp;&nbsp;&nbsp;'First Language': 'English'<br>}
+| FavouriteFilms | `['E.T.', 'Flight of the Navigator', 'Weird Science', 'Ferris Bueller’s Day Off', 'Ghostbusters']` |
+| Attributes | ```json {<br>&nbsp;&nbsp;&nbsp;&nbsp;'Eye Colour': 'Blue'<br>&nbsp;&nbsp;&nbsp;&nbsp;'Hair Colour': 'Brown'<br>&nbsp;&nbsp;&nbsp;&nbsp;'Height (cm)': '180'<br>&nbsp;&nbsp;&nbsp;&nbsp;'First Language': 'English'<br>}``` |
 
 #### Output for `Chunks(3)`
 
@@ -67,7 +68,7 @@ _Chunk #1_
 | DateOfBirth | `1/2/1975` |
 | FavouriteNumbers | `[1, 2, 3]` |
 | FavouriteFilms | `['E.T.', 'Flight of the Navigator', 'Weird Science']` |
-| Attributes | {<br>&nbsp;&nbsp;&nbsp;&nbsp;'Eye Colour': 'Blue'<br>&nbsp;&nbsp;&nbsp;&nbsp;'Hair Colour': 'Brown'<br>&nbsp;&nbsp;&nbsp;&nbsp;'Height (cm)': '180'<br>} |
+| Attributes | ```json {<br>&nbsp;&nbsp;&nbsp;&nbsp;'Eye Colour': 'Blue'<br>&nbsp;&nbsp;&nbsp;&nbsp;'Hair Colour': 'Brown'<br>&nbsp;&nbsp;&nbsp;&nbsp;'Height (cm)': '180'<br>}``` |
 
 _Chunk #2_
 
@@ -77,7 +78,7 @@ _Chunk #2_
 | DateOfBirth | `1/2/1975` |
 | FavouriteNumbers | `[4, 5, 6]` |
 | FavouriteFilms | `['Ferris Bueller’s Day Off', 'Ghostbusters']` |
-| Attributes | {<br>&nbsp;&nbsp;&nbsp;&nbsp;'First Language': 'English'<br>} |
+| Attributes | ```json {<br>&nbsp;&nbsp;&nbsp;&nbsp;'First Language': 'English'<br>}``` |
 
 _Chunk #3_
 
@@ -87,7 +88,7 @@ _Chunk #3_
 | DateOfBirth | `1/2/1975` |
 | FavouriteNumbers | `[7]` |
 | FavouriteFilms | `[]` || 
-| Attributes | { } |
+| Attributes | ```json { }``` |
 
 ## ``T MergeChunks(IEnumerable<T> chunks)``
 

@@ -23,15 +23,13 @@
 	<!--<PackageIcon>icon.png</PackageIcon>-->
 	<Copyright>© Andrew Gordon</Copyright>
 	<PackageReleaseNotes>Initial release</PackageReleaseNotes>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<IncludeBuildOutput>false</IncludeBuildOutput>
 	<contentFiles>
     </contentFiles>
 </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\README.md" Pack="true" PackagePath="/">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
 	<None Include="$(OutputPath)\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" />
   </ItemGroup>
 

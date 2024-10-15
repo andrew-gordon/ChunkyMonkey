@@ -29,12 +29,24 @@
     </contentFiles>
 </PropertyGroup>
 
+	<Target Name="CopyLibraryBDll" AfterTargets="Build">
+		<Copy SourceFiles="$(OutputPath)\ChunkyMonkey.Attributes.dll" DestinationFolder="$(OutputPath)" />
+	</Target>
+	
   <ItemGroup>
     <None Include="..\..\README.md" Pack="true" PackagePath="/">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-	<None Include="$(OutputPath)\ChunkyMonkey.CodeGenerator.dll" Pack="true" PackagePath="analyzers/dotnet/cs" />
-	<None Include="$(OutputPath)\ChunkyMonkey.Attributes.dll" Pack="true" PackagePath="analyzers/dotnet/cs" />
+
+	  <None Include="$(OutputPath)\ChunkyMonkey.Attributes.dll">
+		  <Pack>true</Pack>
+		  <PackagePath>analyzers/dotnet/cs</PackagePath>
+	  </None>
+	  
+	<None Include="$(OutputPath)\ChunkyMonkey.CodeGenerator.dll">
+		<Pack>true</Pack>
+		<PackagePath>analyzers/dotnet/cs</PackagePath>
+	</None>
   </ItemGroup>
 
 

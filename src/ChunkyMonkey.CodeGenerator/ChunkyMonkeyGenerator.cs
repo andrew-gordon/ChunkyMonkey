@@ -9,20 +9,6 @@ namespace ChunkyMonkey.CodeGenerator
     [Generator(LanguageNames.CSharp)]
     public class ChunkyMonkeyGenerator : IIncrementalGenerator
     {
-        // Check Chunk method doesn't already exist
-        // Check MergeChunks method doesn't already exist
-
-        // Check that the existing class is a partial class (if not, compiler warning)
-        // Check that the existing class is not sealed (if so, compiler warning)
-        // Check that the existing class is not static (if so, compiler warning)
-        // Check that the existing class is not abstract (if so, compiler warning)
-        // Check that the existing class is not a struct (if so, compiler warning)
-
-        // Check that the existing class has a parameterless constructor (if not, compiler warning)
-        // Check that the existing class has a public constructor (if not, compiler warning)
-
-        // Handle nullable reference types
-
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
             //System.Diagnostics.Debugger.Launch();

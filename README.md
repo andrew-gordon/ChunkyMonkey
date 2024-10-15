@@ -41,7 +41,7 @@ public T MergeChunks(IEnumerable<T> chunks)
 ```
 ## ```IEnumerable<T> Chunk(int chunkSize)```
 
-* The original class must be a partial class.
+* Only partial classes can be chunked. This is because the code generates generates a partial class containing the methods above for each chunked class.
 * Non-chunkable properties are repeated for each chunked instance.
 * If a collection (list, collection, array or dictionary) property's values are exhausted, subsequent chunks will contain an empty collection for the property value.
 
@@ -74,7 +74,7 @@ _Chunk #2_
 | Property | Value |
 |--------|----------------|
 | Username | 'bob' | 
-| DateOfBirth | 1/2/1975 |
+| DateOfBirth | `1/2/1975` |
 | FavouriteNumbers | `[4, 5, 6]` |
 | FavouriteFilms | `['Ferris Bueller’s Day Off', 'Ghostbusters']` |
 | Attributes | {<br>&nbsp;&nbsp;&nbsp;&nbsp;'Eye Colour': 'Blue'<br>&nbsp;&nbsp;&nbsp;&nbsp;'Hair Colour': 'Brown'<br>&nbsp;&nbsp;&nbsp;&nbsp;'Height (cm)': '180'<br>&nbsp;&nbsp;&nbsp;&nbsp;'First Language': 'English'<br>}
@@ -95,3 +95,16 @@ This generated method merges a set of chunks back into a single instance.
 ## Limitations
 
 * Does not currrently support nullable types.
+
+## Future Enhancements
+
+* Handle nullable reference types
+* Check Chunk method doesn't already exist
+* Check MergeChunks method doesn't already exist
+* Check that the existing class is a partial class (if not, compiler warning)
+* Check that the existing class is not sealed (if so, compiler warning)
+* Check that the existing class is not static (if so, compiler warning)
+* Check that the existing class is not abstract (if so, compiler warning)
+* Check that the existing class is not a struct (if so, compiler warning)
+* Check that the existing class has a parameterless constructor (if not, compiler warning)
+* Check that the existing class has a public constructor (if not, compiler warning)

@@ -15,7 +15,7 @@ Imagine you have a class like this:
 ```csharp
 public class CreateUserRequest
 {
-    public string Username { get; set; }
+	public string Username { get; set; }
 	public DateTime DateOfBirth { get; set; }	
 	public List<int> FavouriteNumbers { get; set; }
 	public string[] FavouriteFilms { get; set; }
@@ -93,5 +93,5 @@ This generated method merges a set of chunks back into a single instance.
 
 ## Future Enhancements
 
-
+* TBD
 

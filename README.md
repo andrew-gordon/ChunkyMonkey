@@ -3,7 +3,7 @@
 ## Introduction
 
 ![ChunkyMonkey](https://raw.githubusercontent.com/andrew-gordon/ChunkyMonkey/main/media/ChunkMonkey.png)
-ChunkyMonkey is a C# Code Generator to split a class containing list, array, collection or dictionary properties into chunks. It also provides the ability to merge the chunks back into a single instance.
+ChunkyMonkey is a C# Code Generator that generates code to split an object containing list, array, collection or dictionary properties into chunks. It also provides the ability to merge the chunks back into a single object instance.
 
 ## Use Cases
 

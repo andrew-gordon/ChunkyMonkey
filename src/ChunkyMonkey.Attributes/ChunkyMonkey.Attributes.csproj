@@ -19,6 +19,7 @@
 		<PackageReleaseNotes>Initial release</PackageReleaseNotes>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<PackageIcon>icon.png</PackageIcon>
 		<contentFiles>
 		</contentFiles>
 	</PropertyGroup>
@@ -28,9 +29,14 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 
+		<None Include="..\..\media\icon.png" Pack="true" PackagePath="/">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+
+		
 		<None Include="$(OutputPath)\ChunkyMonkey.Attributes.dll">
 			<Pack>true</Pack>
-			<PackagePath>analyzers/dotnet/cs</PackagePath>
+			<PackagePath>lib\netstandard2.0</PackagePath>
 		</None>
 	</ItemGroup>
 

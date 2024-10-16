@@ -220,8 +220,12 @@ This generated method merges a set of chunks back into a single instance.
 * Handle nullable reference types
 * Check Chunk method doesn't already exist
 * Check MergeChunks method doesn't already exist
-* Check that the existing class is not sealed (if so, compiler warning)
-* Check that the existing class is not static (if so, compiler warning)
-* Check that the existing class is not abstract (if so, compiler warning)
-* Check that the existing class has a parameterless constructor (if not, compiler warning)
-* Check that the existing class has a public constructor (if not, compiler warning)
+
+
+## Versions
+
+| Version | Description |
+|---------|-------------|
+| 1.0.25 | First decent release |
+| 1.0.26 | Documentation updates |
+| 1.0.27 | <ul><li>Check that the existing class is not sealed (if so, emit analyser warning)</li><li>Check that the existing class is not static (if so, emit analyser warning)</li><li>Check that the existing class is not abstract (if so, emit analyser warning)</li><li>Check that the existing class has a parameterless constructor (if not, emit analyser warning)</li></ul>|

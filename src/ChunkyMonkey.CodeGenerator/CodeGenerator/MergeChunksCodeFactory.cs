@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using static ChunkyMonkey.CodeGenerator.ChunkyMonkeyGenerator;
+using static ChunkyMonkey.CodeGenerator.CodeGenerator.ChunkyMonkeyGenerator;
 
-namespace ChunkyMonkey.CodeGenerator
+namespace ChunkyMonkey.CodeGenerator.CodeGenerator
 {
     internal class MergeChunksCodeFactory
     {
@@ -25,7 +25,7 @@ namespace ChunkyMonkey.CodeGenerator
 
         internal string ForNullableArrayProperty(PropertyInfo propertyInfo, TypeRule typeRule)
         {
-            var newInstanceCommand = typeRule.NewInstance(propertyInfo); 
+            var newInstanceCommand = typeRule.NewInstance(propertyInfo);
 
             var sb = new StringBuilder();
             sb.AppendLine($"");

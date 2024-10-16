@@ -1,4 +1,4 @@
-﻿namespace ChunkyMonkey.CodeGenerator
+﻿namespace ChunkyMonkey.CodeGenerator.CodeGenerator
 {
     internal class PropertyInfo
     {

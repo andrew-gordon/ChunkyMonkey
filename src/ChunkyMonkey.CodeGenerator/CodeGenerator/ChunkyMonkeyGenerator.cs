@@ -1,11 +1,12 @@
 ﻿using ChunkyMonkey.Attributes;
+using ChunkyMonkey.CodeGenerator.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using System.Text;
 
-namespace ChunkyMonkey.CodeGenerator
+namespace ChunkyMonkey.CodeGenerator.CodeGenerator
 {
     [Generator(LanguageNames.CSharp)]
     public class ChunkyMonkeyGenerator : IIncrementalGenerator
@@ -241,7 +242,7 @@ namespace ChunkyMonkey.CodeGenerator
             sb.AppendLine("   }");
             sb.AppendLine("}");
 
-            var code = sb.ToString();            
+            var code = sb.ToString();
 
             return code;
         }

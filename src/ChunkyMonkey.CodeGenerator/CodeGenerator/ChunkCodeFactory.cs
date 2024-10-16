@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using static ChunkyMonkey.CodeGenerator.ChunkyMonkeyGenerator;
+using static ChunkyMonkey.CodeGenerator.CodeGenerator.ChunkyMonkeyGenerator;
 
-namespace ChunkyMonkey.CodeGenerator
+namespace ChunkyMonkey.CodeGenerator.CodeGenerator
 {
     internal class ChunkCodeFactory
     {

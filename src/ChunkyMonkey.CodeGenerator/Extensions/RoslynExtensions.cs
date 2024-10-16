@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace ChunkyMonkey.CodeGenerator
+namespace ChunkyMonkey.CodeGenerator.Extensions
 {
     public static class RoslynExtensions
     {

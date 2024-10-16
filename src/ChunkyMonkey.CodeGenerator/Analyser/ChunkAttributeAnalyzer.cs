@@ -10,25 +10,31 @@ namespace ChunkyMonkey.CodeGenerator.Analyser
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class ChunkAttributeAnalyzer : DiagnosticAnalyzer
     {
-        private const string DiagnosticId1 = "CMKY001";
-        private static readonly DiagnosticDescriptor Rule1 = new(
-            DiagnosticId1,
-            "Invalid use of ChunkAttribute on abstract/static class",
-            "ChunkAttribute cannot be applied to abstract or static classes",
+        private static readonly DiagnosticDescriptor NonAbstractClassRule = new(
+            "CMKY001",
+            "Invalid use of ChunkAttribute on an abstract class",
+            "ChunkAttribute cannot be applied to an abstract class",
             "Usage",
             DiagnosticSeverity.Error,
             isEnabledByDefault: true);
 
-        private const string DiagnosticId2 = "CMKY002";
-        private static readonly DiagnosticDescriptor Rule2 = new(
-            DiagnosticId2,
+        private static readonly DiagnosticDescriptor NonStaticClassRule = new(
+            "CMKY002",
+            "Invalid use of ChunkAttribute on a static class",
+            "ChunkAttribute cannot be applied to a static class",
+            "Usage",
+            DiagnosticSeverity.Error,
+            isEnabledByDefault: true);
+
+        private static readonly DiagnosticDescriptor ClassWithParameterlessContructorRule = new(
+            "CMKY003",
             "Invalid use of ChunkAttribute on class without parameterless constructor",
             "ChunkAttribute can only be applied to a class with a parameterless constructor",
             "Usage",
             DiagnosticSeverity.Error,
             isEnabledByDefault: true);
 
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule1, Rule2);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(NonAbstractClassRule, NonStaticClassRule);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -62,10 +68,16 @@ namespace ChunkyMonkey.CodeGenerator.Analyser
             bool isAbstract = classSymbol.IsAbstract;
             bool isStatic = classSymbol.IsStatic;
 
-            if (isAbstract || isStatic)
+            if (isAbstract)
             {
                 // Report a diagnostic if the class violates the rules
-                var diagnostic = Diagnostic.Create(Rule1, classDeclaration.Identifier.GetLocation());
+                var diagnostic = Diagnostic.Create(NonAbstractClassRule, classDeclaration.Identifier.GetLocation());
+                context.ReportDiagnostic(diagnostic);
+            }
+            if (isStatic)
+            {
+                // Report a diagnostic if the class violates the rules
+                var diagnostic = Diagnostic.Create(NonStaticClassRule, classDeclaration.Identifier.GetLocation());
                 context.ReportDiagnostic(diagnostic);
             }
 
@@ -76,7 +88,7 @@ namespace ChunkyMonkey.CodeGenerator.Analyser
             // If the class does not have a parameterless constructor, report a diagnostic
             if (!hasParameterlessConstructor)
             {
-                var diagnostic = Diagnostic.Create(Rule2, classDeclaration.Identifier.GetLocation());
+                var diagnostic = Diagnostic.Create(ClassWithParameterlessContructorRule, classDeclaration.Identifier.GetLocation());
                 context.ReportDiagnostic(diagnostic);
             }
         }

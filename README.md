@@ -101,7 +101,7 @@ This generated method merges a set of chunks back into a single instance.
 
 ## Using within a .NET project
 
-1. Add the ChunkyMonkey NuGet package to your C# project containing classes that you'd like to be able to generate the `Chunk` and `MergeChunks` methods.
+1. Add the ChunkyMonkey NuGet package to your C# project containing classes for which you'd like to generate the `Chunk` and `MergeChunks` methods.
 
     | Environment | Command |
     |-------------|---------|
@@ -225,6 +225,11 @@ This generated method merges a set of chunks back into a single instance.
 | Version | Description |
 |---------|-------------|
 | 1.0.29  | First decent release. Earlier versions unlisted. |
-| 1.0.30  | Added two analyser warnings for invalid usage of ```ChunkAttribute``` <br><br> `CMKY001 ChunkAttribute cannot be applied to abstract or static classes` <br><ul><li>Check that the existing class is not static (if so, emit analyser warning)</li><li>Check that the existing class is not abstract (if so, emit analyser warning)</li><li>Check that the existing class has a parameterless constructor (if not, emit analyser warning)</li></ul><br> `CMKY002 ChunkAttribute can only be applied to classes with a parameterless constructor` <br><ul><li>Check that the existing class has a parameterless constructor (if not, emit analyser warning)</li></ul> |
+| 1.0.30  | Added a code analyser to check if `ChunkAttribute` is misplaced on an abstract class, a static class, or a class with parameterless constructor. |
 | 1.0.31  | Documentation updates |
 | 1.0.32  | Allow `ChunkAttribute` to be used on `sealed` classes |
+| 1.0.33  | Minor fixes and documentation updates |
+| 1.0.34  | Minor fixes and documentation updates |
+| 1.0.35  | Minor fixes and documentation updates |
+| 1.0.36  | Minor fixes and documentation updates |
+| 1.0.36  | Minor fixes and documentation updates |

@@ -10,16 +10,25 @@ namespace ChunkyMonkey.CodeGenerator.Analyser
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class ChunkAttributeAnalyzer : DiagnosticAnalyzer
     {
-        private const string DiagnosticId = "MY001";
-        private static readonly DiagnosticDescriptor Rule = new(
-            DiagnosticId,
-            "Invalid use of MyCustomAttribute",
+        private const string DiagnosticId1 = "CMKY001";
+        private static readonly DiagnosticDescriptor Rule1 = new(
+            DiagnosticId1,
+            "Invalid use of ChunkAttribute",
             "ChunkAttribute can only be applied to unsealed, non-abstract, non-static classes",
             "Usage",
             DiagnosticSeverity.Error,
             isEnabledByDefault: true);
 
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+        private const string DiagnosticId2 = "CMKY002";
+        private static readonly DiagnosticDescriptor Rule2 = new(
+            DiagnosticId2,
+            "Invalid use of ChunkAttribute",
+            "ChunkAttribute can only be applied to a class with a parameterless constructor",
+            "Usage",
+            DiagnosticSeverity.Error,
+            isEnabledByDefault: true);
+
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule1, Rule2);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -58,7 +67,7 @@ namespace ChunkyMonkey.CodeGenerator.Analyser
             if (isSealed || isAbstract || isStatic)
             {
                 // Report a diagnostic if the class violates the rules
-                var diagnostic = Diagnostic.Create(Rule, classDeclaration.Identifier.GetLocation());
+                var diagnostic = Diagnostic.Create(Rule1, classDeclaration.Identifier.GetLocation());
                 context.ReportDiagnostic(diagnostic);
             }
 
@@ -69,7 +78,7 @@ namespace ChunkyMonkey.CodeGenerator.Analyser
             // If the class does not have a parameterless constructor, report a diagnostic
             if (!hasParameterlessConstructor)
             {
-                var diagnostic = Diagnostic.Create(Rule, classDeclaration.Identifier.GetLocation());
+                var diagnostic = Diagnostic.Create(Rule2, classDeclaration.Identifier.GetLocation());
                 context.ReportDiagnostic(diagnostic);
             }
         }

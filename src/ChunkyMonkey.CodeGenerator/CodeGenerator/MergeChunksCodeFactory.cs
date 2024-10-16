@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using static ChunkyMonkey.CodeGenerator.CodeGenerator.ChunkyMonkeyGenerator;
 
 namespace ChunkyMonkey.CodeGenerator.CodeGenerator
 {

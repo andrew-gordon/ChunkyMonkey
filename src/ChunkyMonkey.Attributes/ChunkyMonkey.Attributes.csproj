@@ -5,7 +5,7 @@
 		<LangVersion>Latest</LangVersion>
 		<Nullable>enable</Nullable>
 
-		<PackageId>GordoSoft.ChunkyMonkey.Attributes</PackageId>
+		<PackageId>Gord0.ChunkyMonkey.Attributes</PackageId>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Version>1.0.0</Version>
 		<Authors>Andrew Gordon</Authors>

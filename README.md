@@ -226,7 +226,6 @@ This generated method merges a set of chunks back into a single instance.
 
 | Version | Description |
 |---------|-------------|
-| 1.0.25 | First decent release |
-| 1.0.26 | Documentation updates |
+| 1.0.29 | First decent release |
 | 1.0.30 | `CMKY001 ChunkAttribute can only be applied to unsealed, non-abstract, non-static classes` <br><ul><li>Check that the existing class is not sealed (if so, emit analyser warning)</li><li>Check that the existing class is not static (if so, emit analyser warning)</li><li>Check that the existing class is not abstract (if so, emit analyser warning)</li><li>Check that the existing class has a parameterless constructor (if not, emit analyser warning)</li></ul> |
 | 1.0.30 | `CMKY001 ChunkAttribute can only be applied to unsealed, non-abstract, non-static classes` <br><ul><li>Check that the existing class has a parameterless constructor (if not, emit analyser warning)</li></ul> |

@@ -156,13 +156,14 @@ This generated method merges a set of chunks back into a single instance.
             /// <returns>An enumerable of chunked instances.</returns>
             public IEnumerable<Person> Chunk(int chunkSize)
             {
-                int maxCollectionLength = 0;
-                if (this.PhoneNumbers.Length > maxCollectionLength)
+                // Find the length of the biggest collecion.
+                int biggestCollectionLength = 0;
+                if (this.PhoneNumbers.Length > biggestCollectionLength)
                 {
-                    maxCollectionLength = this.PhoneNumbers.Length;
+                    biggestCollectionLength = this.PhoneNumbers.Length;
                 }
 
-                for (int i = 0; i < maxCollectionLength; i += chunkSize)
+                for (int i = 0; i < biggestCollectionLength; i += chunkSize)
                 {
                     var instance = new Person();
                     {

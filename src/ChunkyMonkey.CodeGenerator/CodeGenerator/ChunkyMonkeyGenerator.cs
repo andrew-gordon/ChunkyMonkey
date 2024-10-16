@@ -143,7 +143,8 @@ namespace ChunkyMonkey.CodeGenerator.CodeGenerator
             sb.AppendLine("        public IEnumerable<" + className + "> Chunk(int chunkSize)");
             sb.AppendLine("        {");
 
-            sb.AppendLine($"            int maxCollectionLength = 0;");
+            sb.AppendLine($"            // Find the length of the biggest collecion.");
+            sb.AppendLine($"            int biggestCollectionLength = 0;");
 
             // Loop through properties and generate chunking logic for collection properties
             foreach (var member in classDeclaration.Members)
@@ -157,16 +158,16 @@ namespace ChunkyMonkey.CodeGenerator.CodeGenerator
                     {
                         var propertyName = property.Identifier.Text;
 
-                        sb.AppendLine($"            if (this.{propertyName}.{typeRule.LengthPropertyName} > maxCollectionLength)");
+                        sb.AppendLine($"            if (this.{propertyName}.{typeRule.LengthPropertyName} > biggestCollectionLength)");
                         sb.AppendLine($"            {{");
-                        sb.AppendLine($"                maxCollectionLength = this.{propertyName}.{typeRule.LengthPropertyName};");
+                        sb.AppendLine($"                biggestCollectionLength = this.{propertyName}.{typeRule.LengthPropertyName};");
                         sb.AppendLine($"            }}");
                     }
                 }
             }
 
             sb.AppendLine($"");
-            sb.AppendLine($"            for (int i = 0; i < maxCollectionLength; i += chunkSize)");
+            sb.AppendLine($"            for (int i = 0; i < biggestCollectionLength; i += chunkSize)");
             sb.AppendLine($"            {{");
             sb.AppendLine($"                var instance = new {className}();");
 

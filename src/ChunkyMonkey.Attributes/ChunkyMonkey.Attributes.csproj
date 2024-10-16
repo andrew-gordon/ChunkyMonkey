@@ -28,7 +28,7 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 
-		<None Include="$(OutputPath)\ChunkyMonkey.Atributes.dll">
+		<None Include="$(OutputPath)\ChunkyMonkey.Attributes.dll">
 			<Pack>true</Pack>
 			<PackagePath>analyzers/dotnet/cs</PackagePath>
 		</None>

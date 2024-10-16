@@ -13,8 +13,8 @@ namespace ChunkyMonkey.CodeGenerator.Analyser
         private const string DiagnosticId1 = "CMKY001";
         private static readonly DiagnosticDescriptor Rule1 = new(
             DiagnosticId1,
-            "Invalid use of ChunkAttribute",
-            "ChunkAttribute can only be applied to non-abstract and non-static classes",
+            "Invalid use of ChunkAttribute on abstract/static class",
+            "ChunkAttribute cannot be applied to abstract or static classes",
             "Usage",
             DiagnosticSeverity.Error,
             isEnabledByDefault: true);
@@ -22,7 +22,7 @@ namespace ChunkyMonkey.CodeGenerator.Analyser
         private const string DiagnosticId2 = "CMKY002";
         private static readonly DiagnosticDescriptor Rule2 = new(
             DiagnosticId2,
-            "Invalid use of ChunkAttribute",
+            "Invalid use of ChunkAttribute on class without parameterless constructor",
             "ChunkAttribute can only be applied to a class with a parameterless constructor",
             "Usage",
             DiagnosticSeverity.Error,

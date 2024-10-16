@@ -1,5 +1,6 @@
 ﻿using ChunkyMonkey.Attributes;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using System.Text;
@@ -15,7 +16,7 @@ namespace ChunkyMonkey.CodeGenerator
         /// <param name="context">The IncrementalGeneratorInitializationContext.</param>
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            //System.Diagnostics.Debugger.Launch();
+            // System.Diagnostics.Debugger.Launch();
 
             // Collect class declarations
             var syntaxProvider = context.SyntaxProvider
@@ -32,19 +33,40 @@ namespace ChunkyMonkey.CodeGenerator
 
                         return hasChunkAttribute ? classDeclaration : null;
                     })
-                .Where(static m => m is not null);
+                .Where(static m => m != null);
 
+
+            // Register the CompilationProvider to access the Compilation object
+            IncrementalValueProvider<Compilation> compilationProvider = context.CompilationProvider;
+
+            string generatedCode = string.Empty;
 
             // Register the output generation
             context.RegisterSourceOutput(syntaxProvider, (spc, classDecl) =>
             {
-                if (classDecl is not null)
+                if (classDecl != null)
                 {
                     // Here you can generate code based on the class declaration
                     var className = classDecl?.Identifier.Text;
-                    var generatedCode = GenerateChunkingCode(className!, classDecl!);
+                    generatedCode = GenerateChunkingCode(className!, classDecl!);
 
                     spc.AddSource($"{className}_Chunked.g.cs", SourceText.From(generatedCode, Encoding.UTF8));
+                }
+            });
+
+            // Use the Compilation object to get the C# language version
+            context.RegisterSourceOutput(compilationProvider, (sourceProductionContext, compilation) =>
+            {
+                // Get the language version from the Compilation object
+                if (compilation is CSharpCompilation csharpCompilation)
+                {
+                    var languageVersion = csharpCompilation.LanguageVersion;
+
+                    if (languageVersion.MapSpecifiedToEffectiveVersion() >= LanguageVersion.CSharp8.MapSpecifiedToEffectiveVersion())
+                    {
+                        generatedCode = generatedCode.Replace("!= null", "is not null");
+                        generatedCode = generatedCode.Replace("!=null", "is not null");
+                    }
                 }
             });
         }
@@ -105,6 +127,7 @@ namespace ChunkyMonkey.CodeGenerator
             sb.AppendLine("using System;");
             sb.AppendLine("using System.Collections.Generic;");
             sb.AppendLine("using System.Collections.ObjectModel;");
+            sb.AppendLine("using System.Linq;");
             sb.AppendLine("");
 
             sb.AppendLine($"namespace {namespaceText}");
@@ -133,7 +156,7 @@ namespace ChunkyMonkey.CodeGenerator
                     var propertyType = property.Type.ToString();
 
                     var typeRule = typeRules.FirstOrDefault(x => x.TypeMatcher(propertyType));
-                    if (typeRule is not null)
+                    if (typeRule != null)
                     {
                         var propertyName = property.Identifier.Text;
 
@@ -159,9 +182,9 @@ namespace ChunkyMonkey.CodeGenerator
                 {
                     var propertyInfo = GetPropertyInfo(property);
 
-                    var typeRule = typeRules.FirstOrDefault(x => propertyInfo.TypeName is not null && x.TypeMatcher(propertyInfo.TypeName));
+                    var typeRule = typeRules.FirstOrDefault(x => propertyInfo.TypeName != null && x.TypeMatcher(propertyInfo.TypeName));
 
-                    if (typeRule is not null)
+                    if (typeRule != null)
                     {
                         var line = typeRule.ChunkCodeFactory(propertyInfo, typeRule);
                         sb.AppendLine(line);
@@ -201,10 +224,10 @@ namespace ChunkyMonkey.CodeGenerator
                 {
                     var propertyInfo = GetPropertyInfo(property);
 
-                    var typeRule = typeRules.FirstOrDefault(x => propertyInfo.TypeName is not null && x.TypeMatcher(propertyInfo.TypeName));
-                    if (typeRule is not null)
+                    var typeRule = typeRules.FirstOrDefault(x => propertyInfo.TypeName != null && x.TypeMatcher(propertyInfo.TypeName));
+                    if (typeRule != null)
                     {
-                        if (typeRule is not null)
+                        if (typeRule != null)
                         {
                             var line = typeRule.MergeChunksCodeFactory(propertyInfo, typeRule);
                             sb.AppendLine(line);
@@ -224,8 +247,9 @@ namespace ChunkyMonkey.CodeGenerator
             sb.AppendLine("   }");
             sb.AppendLine("}");
 
+            var code = sb.ToString();            
 
-            return sb.ToString();
+            return code;
         }
 
         private PropertyInfo GetPropertyInfo(PropertyDeclarationSyntax property)
@@ -246,7 +270,7 @@ namespace ChunkyMonkey.CodeGenerator
             {
                 var syntax = property.Type as ArrayTypeSyntax;
 
-                if (syntax is not null)
+                if (syntax != null)
                 {
                     isArray = true;
                     arrayElementType = syntax.ElementType.ToString();

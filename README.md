@@ -92,9 +92,119 @@ _Chunk #3_
 
 This generated method merges a set of chunks back into a single instance. 
 
+
+## Using within a .NET project
+
+1. Add the ChunkyMonkey NuGet package to your C# project containing classes that you'd like to be able to generate the `Chunk` and `MergeChunks` methods.
+
+| Environment | Command |
+|-------------|---------|
+| .NET CLI | `dotnet add package Gord0.ChunkyMonkey.CodeGenerator` |
+| VS Package Manager Console | `NuGet\Install-Package Gord0.ChunkyMonkey.CodeGenerator` |
+| VS Package Manager Console | `<PackageReference Include="Gord0.ChunkyMonkey.CodeGenerator" Version="x.y.z" />` |
+
+2. Add the `[Chunk]` attribute to a class for which you'd like to generate the `Chunk` and `MergeChunks` methods.
+
+```csharp
+using ChunkyMonkey.Attributes;
+
+namespace TestProject
+{
+    [Chunk]
+    public partial class Person
+    {
+        public string[] PhoneNumbers { get; set; }
+    }
+}
+```
+
+> [!NOTE]
+> If your classes/DTOs live in a separate project, you should add the `Gord0.ChunkyMonkey.Attributes` package to that project. This package provides the `ChunkAttribute`. It's kept in a seperate package to avoid your project having a dependency on the code generator.
+
+3. Build your project.
+
+4. To view the generated partial classes:
+	1. Expand the Dependencies nodes under your project in the Solution Explorer. 
+	1. Expand the Analyzers node.
+	1. Expand the ChunkyMonkey.CodeGenerator node.
+	1. Expand the ChunkyMonkey.CodeGenerator.ChunkyMonkeyGenerator node.
+	1. Now you will see the generated partial classes, each containing the `Chunk` and `MergeChunks` methods. The generated classes are called `<ClassName>_Chunked.g.cs`
+	
+5. The output for the above Person class would be a file called `Person_Chunked.g.cs`:
+
+```csharp
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+
+namespace TestProject
+{
+    public partial class Person
+    {
+        /// <summary>
+        /// Chunks the instance into multiple instances based on the specified chunk size.
+        /// </summary>
+        /// <param name="chunkSize">The size of each chunk.</param>
+        /// <returns>An enumerable of chunked instances.</returns>
+        public IEnumerable<Person> Chunk(int chunkSize)
+        {
+            int maxCollectionLength = 0;
+            if (this.PhoneNumbers.Length > maxCollectionLength)
+            {
+                maxCollectionLength = this.PhoneNumbers.Length;
+            }
+
+            for (int i = 0; i < maxCollectionLength; i += chunkSize)
+            {
+                var instance = new Person();
+                {
+                    if (this.PhoneNumbers is not null)
+                    {
+                        instance.PhoneNumbers = this.PhoneNumbers.Skip(i).Take(chunkSize).ToArray();
+                    }
+                }
+
+
+                yield return instance;
+            }
+        }
+
+        /// <summary>
+        /// Merges the specified chunks into a single instance.
+        /// </summary>
+        /// <param name="chunks">The chunks to merge.</param>
+        /// <returns>The merged instance.</returns>
+        public static Person MergeChunks(IEnumerable<Person> chunks)
+        {
+            var instance = new Person();
+
+            foreach(var chunk in chunks)
+            {
+
+                if (chunk.PhoneNumbers is not null)
+                {
+                    if (instance.PhoneNumbers is null)
+                    {
+                        instance.PhoneNumbers = Array.Empty<string>();
+                    }
+
+                    instance.PhoneNumbers = instance.PhoneNumbers.Concat(chunk.PhoneNumbers).ToArray();
+                }
+
+            }
+
+            return instance;
+        }
+   }
+}
+```
+
 ## Limitations
 
 * Does not currrently support nullable types.
+
+
 
 ## Future Enhancements
 
@@ -108,3 +218,4 @@ This generated method merges a set of chunks back into a single instance.
 * Check that the existing class is not a struct (if so, compiler warning)
 * Check that the existing class has a parameterless constructor (if not, compiler warning)
 * Check that the existing class has a public constructor (if not, compiler warning)
+* 

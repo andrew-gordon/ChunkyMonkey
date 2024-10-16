@@ -2,6 +2,7 @@
 
 ## Introduction
 
+![ChunkyMonkey](media/ChunkMonkey.png)
 ChunkyMonkey is a C# Code Generator to split a class containing list, array, collection or dictionary properties into chunks. It also provides the ability to merge the chunks back into a single instance.
 
 ## Use Cases
@@ -218,4 +219,3 @@ namespace TestProject
 * Check that the existing class is not a struct (if so, compiler warning)
 * Check that the existing class has a parameterless constructor (if not, compiler warning)
 * Check that the existing class has a public constructor (if not, compiler warning)
-* 

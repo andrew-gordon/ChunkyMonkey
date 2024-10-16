@@ -62,7 +62,7 @@ namespace ChunkyMonkey.CodeGenerator
                 {
                     var languageVersion = csharpCompilation.LanguageVersion;
 
-                    if (languageVersion.MapSpecifiedToEffectiveVersion() >= LanguageVersion.CSharp8.MapSpecifiedToEffectiveVersion())
+                    if (languageVersion.MapSpecifiedToEffectiveVersion() > LanguageVersion.CSharp8.MapSpecifiedToEffectiveVersion())
                     {
                         generatedCode = generatedCode.Replace("!= null", "is not null");
                         generatedCode = generatedCode.Replace("!=null", "is not null");

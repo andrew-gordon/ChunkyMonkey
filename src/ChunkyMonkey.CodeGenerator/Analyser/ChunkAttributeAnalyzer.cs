@@ -14,7 +14,7 @@ namespace ChunkyMonkey.CodeGenerator.Analyser
         private static readonly DiagnosticDescriptor Rule1 = new(
             DiagnosticId1,
             "Invalid use of ChunkAttribute",
-            "ChunkAttribute can only be applied to unsealed, non-abstract, non-static classes",
+            "ChunkAttribute can only be applied to non-abstract and non-static classes",
             "Usage",
             DiagnosticSeverity.Error,
             isEnabledByDefault: true);
@@ -59,12 +59,10 @@ namespace ChunkyMonkey.CodeGenerator.Analyser
                 return;
             }
 
-            // Check if the class is sealed, abstract, or static
-            bool isSealed = classSymbol.IsSealed;
             bool isAbstract = classSymbol.IsAbstract;
             bool isStatic = classSymbol.IsStatic;
 
-            if (isSealed || isAbstract || isStatic)
+            if (isAbstract || isStatic)
             {
                 // Report a diagnostic if the class violates the rules
                 var diagnostic = Diagnostic.Create(Rule1, classDeclaration.Identifier.GetLocation());

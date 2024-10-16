@@ -40,7 +40,17 @@ namespace ChunkyMonkey.CodeGenerator.CodeGenerator
             // Register the CompilationProvider to access the Compilation object
             IncrementalValueProvider<Compilation> compilationProvider = context.CompilationProvider;
 
-            string generatedCode = string.Empty;
+            LanguageVersion? languageVersion = null;
+
+            // Use the Compilation object to get the C# language version
+            context.RegisterSourceOutput(compilationProvider, (sourceProductionContext, compilation) =>
+            {
+                // Get the language version from the Compilation object
+                if (compilation is CSharpCompilation csharpCompilation)
+                {
+                    languageVersion = csharpCompilation.LanguageVersion;
+                }
+            });
 
             // Register the output generation
             context.RegisterSourceOutput(syntaxProvider, (spc, classDecl) =>
@@ -49,30 +59,22 @@ namespace ChunkyMonkey.CodeGenerator.CodeGenerator
                 {
                     // Here you can generate code based on the class declaration
                     var className = classDecl?.Identifier.Text;
-                    generatedCode = GenerateChunkingCode(className!, classDecl!);
+                    var generatedCode = GenerateChunkingCode(className!, classDecl!, languageVersion);
 
                     spc.AddSource($"{className}_Chunk.g.cs", SourceText.From(generatedCode, Encoding.UTF8));
                 }
             });
-
-            // Use the Compilation object to get the C# language version
-            context.RegisterSourceOutput(compilationProvider, (sourceProductionContext, compilation) =>
-            {
-                // Get the language version from the Compilation object
-                if (compilation is CSharpCompilation csharpCompilation)
-                {
-                    var languageVersion = csharpCompilation.LanguageVersion;
-                }
-            });
         }
 
-        private string GenerateChunkingCode(string className, ClassDeclarationSyntax classDeclaration)
+        private string GenerateChunkingCode(string className, ClassDeclarationSyntax classDeclaration, LanguageVersion? languageVersion)
         {
             var namespaceText = classDeclaration.GetNamespace();
 
             namespaceText ??= "Unknown_Namespace";
+            var sealedModifier = classDeclaration.IsSealed() ? "sealed " : string.Empty;
 
-            var typeRules = new List<TypeRule>();
+
+        var typeRules = new List<TypeRule>();
 
             var chunkCodeFactory = new ChunkCodeFactory();
             var MergeChunksCodeFactory = new MergeChunksCodeFactory();
@@ -80,41 +82,41 @@ namespace ChunkyMonkey.CodeGenerator.CodeGenerator
             typeRules.AddRange(
                 [
                     new TypeRule(
-                                    name: "List",
-                                    typeMatcher: propertyName => propertyName.StartsWith("List<"),
-                                    lengthPropertyName: "Count",
-                                    chunkCodeFactory: chunkCodeFactory.ForListProperty,
-                                    MergeChunksCodeFactory: MergeChunksCodeFactory.ForListProperty,
-                                    newInstance: pi => $"new {pi.TypeName}()"),
-                                new TypeRule(
-                                    name: "Collection",
-                                    typeMatcher: propertyType => propertyType.StartsWith("Collection<"),
-                                    lengthPropertyName: "Count",
-                                    chunkCodeFactory: chunkCodeFactory.ForCollectionProperty,
-                                    MergeChunksCodeFactory: MergeChunksCodeFactory.ForCollectionProperty,
-                                    newInstance: pi => $"new {pi.TypeName}()"),
-                                new TypeRule(
-                                    name: "Dictionary",
-                                    typeMatcher: propertyName => propertyName.StartsWith("Dictionary<"),
-                                    lengthPropertyName: "Count",
-                                    chunkCodeFactory: chunkCodeFactory.ForDictionaryProperty,
-                                    MergeChunksCodeFactory: MergeChunksCodeFactory.ForDictionaryProperty,
-                                    newInstance: pi => $"new {pi.TypeName}()"),
-                                new TypeRule(
-                                    name: "Array",
-                                    typeMatcher: propertyName => propertyName.EndsWith("[]"),
-                                    lengthPropertyName: "Length",
-                                    chunkCodeFactory: chunkCodeFactory.ForArrayProperty,
-                                    MergeChunksCodeFactory: MergeChunksCodeFactory.ForArrayProperty,
-                                    newInstance: pi => $"Array.Empty<{pi.ArrayElementType}>()"),
-                                //new TypeRule(
-                                //    name: "Array",
-                                //    typeMatcher: propertyName => propertyName.EndsWith("[]?"),
-                                //    lengthPropertyName: "Length",
-                                //    chunkCodeFactory: chunkCodeFactory.ForNullableArrayProperty,
-                                //    MergeChunksCodeFactory: MergeChunksCodeFactory.ForNullableArrayProperty,
-                                //    newInstance: pi => $"Array.Empty<{pi.ArrayElementType}?>()"),
-                            ]
+                        name: "List",
+                        typeMatcher: propertyName => propertyName.StartsWith("List<"),
+                        lengthPropertyName: "Count",
+                        chunkCodeFactory: chunkCodeFactory.ForListProperty,
+                        MergeChunksCodeFactory: MergeChunksCodeFactory.ForListProperty,
+                        newInstance: pi => $"new {pi.TypeName}()"),
+                    new TypeRule(
+                        name: "Collection",
+                        typeMatcher: propertyType => propertyType.StartsWith("Collection<"),
+                        lengthPropertyName: "Count",
+                        chunkCodeFactory: chunkCodeFactory.ForCollectionProperty,
+                        MergeChunksCodeFactory: MergeChunksCodeFactory.ForCollectionProperty,
+                        newInstance: pi => $"new {pi.TypeName}()"),
+                    new TypeRule(
+                        name: "Dictionary",
+                        typeMatcher: propertyName => propertyName.StartsWith("Dictionary<"),
+                        lengthPropertyName: "Count",
+                        chunkCodeFactory: chunkCodeFactory.ForDictionaryProperty,
+                        MergeChunksCodeFactory: MergeChunksCodeFactory.ForDictionaryProperty,
+                        newInstance: pi => $"new {pi.TypeName}()"),
+                    new TypeRule(
+                        name: "Array",
+                        typeMatcher: propertyName => propertyName.EndsWith("[]"),
+                        lengthPropertyName: "Length",
+                        chunkCodeFactory: chunkCodeFactory.ForArrayProperty,
+                        MergeChunksCodeFactory: MergeChunksCodeFactory.ForArrayProperty,
+                        newInstance: pi => $"Array.Empty<{pi.ArrayElementType}>()"),
+                    //new TypeRule(
+                    //    name: "Array",
+                    //    typeMatcher: propertyName => propertyName.EndsWith("[]?"),
+                    //    lengthPropertyName: "Length",
+                    //    chunkCodeFactory: chunkCodeFactory.ForNullableArrayProperty,
+                    //    MergeChunksCodeFactory: MergeChunksCodeFactory.ForNullableArrayProperty,
+                    //    newInstance: pi => $"Array.Empty<{pi.ArrayElementType}?>()"),
+                ]
              );
 
             var sb = new StringBuilder();
@@ -130,7 +132,7 @@ namespace ChunkyMonkey.CodeGenerator.CodeGenerator
 
             // use same namespace as the original class
 
-            sb.AppendLine($"    public partial class {className}");
+            sb.AppendLine($"    public {sealedModifier}partial class {className}");
             sb.AppendLine("    {");
 
             sb.AppendLine("        /// <summary>");

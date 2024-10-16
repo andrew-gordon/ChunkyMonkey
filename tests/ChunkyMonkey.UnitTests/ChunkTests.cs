@@ -3,7 +3,7 @@ using ChunkyMonkey.UnitTests.TestClasses;
 
 namespace ChunkyMonkey.UnitTests
 {
-    public partial class ChunkTests
+    public class ChunkTests
     {
         [Fact]
         public void Chunk_ArrayProperty_ReturnsChunkedInstances()

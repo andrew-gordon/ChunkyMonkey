@@ -2,5 +2,5 @@
 
 Rule ID | Category | Severity | Notes
 --------|----------|----------|--------------------
-CMKY001	| Usage    | Error    | ChunkAttribute can only be applied to unsealed, non-abstract, non-static classes |
+CMKY001	| Usage    | Error    | ChunkAttribute can only be applied to non-abstract and non-static classes |
 CMKY002	| Usage    | Error    | ChunkAttribute can only be applied to classes with a parameterless constructor |

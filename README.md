@@ -218,14 +218,11 @@ This generated method merges a set of chunks back into a single instance.
 ## Future Enhancements
 
 * Handle nullable reference types
-* Check Chunk method doesn't already exist
-* Check MergeChunks method doesn't already exist
-
 
 ## Versions
 
 | Version | Description |
 |---------|-------------|
-| 1.0.29 | First decent release |
-| 1.0.30 | `CMKY001 ChunkAttribute can only be applied to unsealed, non-abstract, non-static classes` <br><ul><li>Check that the existing class is not sealed (if so, emit analyser warning)</li><li>Check that the existing class is not static (if so, emit analyser warning)</li><li>Check that the existing class is not abstract (if so, emit analyser warning)</li><li>Check that the existing class has a parameterless constructor (if not, emit analyser warning)</li></ul> |
-| 1.0.30 | `CMKY001 ChunkAttribute can only be applied to unsealed, non-abstract, non-static classes` <br><ul><li>Check that the existing class has a parameterless constructor (if not, emit analyser warning)</li></ul> |
+| 1.0.29  | First decent release. Earlier versions unlisted. |
+| 1.0.30  | Added two analyser warnings for invalid usage of ```ChunkAttribute``` <br><br> `CMKY001 ChunkAttribute can only be applied to unsealed, non-abstract, non-static classes` <br><ul><li>Check that the existing class is not sealed (if so, emit analyser warning)</li><li>Check that the existing class is not static (if so, emit analyser warning)</li><li>Check that the existing class is not abstract (if so, emit analyser warning)</li><li>Check that the existing class has a parameterless constructor (if not, emit analyser warning)</li></ul><br> `CMKY002 ChunkAttribute can only be applied to classes with a parameterless constructor` <br><ul><li>Check that the existing class has a parameterless constructor (if not, emit analyser warning)</li></ul> |
+| 1.0.31  | Documentation updates |

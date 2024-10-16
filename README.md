@@ -135,7 +135,7 @@ This generated method merges a set of chunks back into a single instance.
 	- Expand the Analyzers node.
 	- Expand the ChunkyMonkey.CodeGenerator node.
 	- Expand the ChunkyMonkey.CodeGenerator.ChunkyMonkeyGenerator node.
-	- Now you will see the generated partial classes, each containing the `Chunk` and `MergeChunks` methods. The generated classes are called `<ClassName>_Chunked.g.cs`
+	- Now you will see the generated partial classes, each containing the `Chunk` and `MergeChunks` methods. The generated classes are called `<ClassName>_Chunk.g.cs`
 	
 5. The output for the above Person class would be a file called `Person_Chunked.g.cs`:
 

@@ -50,7 +50,7 @@ namespace ChunkyMonkey.CodeGenerator
                     var className = classDecl?.Identifier.Text;
                     generatedCode = GenerateChunkingCode(className!, classDecl!);
 
-                    spc.AddSource($"{className}_Chunked.g.cs", SourceText.From(generatedCode, Encoding.UTF8));
+                    spc.AddSource($"{className}_Chunk.g.cs", SourceText.From(generatedCode, Encoding.UTF8));
                 }
             });
 
@@ -61,12 +61,6 @@ namespace ChunkyMonkey.CodeGenerator
                 if (compilation is CSharpCompilation csharpCompilation)
                 {
                     var languageVersion = csharpCompilation.LanguageVersion;
-
-                    if (languageVersion.MapSpecifiedToEffectiveVersion() > LanguageVersion.CSharp8.MapSpecifiedToEffectiveVersion())
-                    {
-                        generatedCode = generatedCode.Replace("!= null", "is not null");
-                        generatedCode = generatedCode.Replace("!=null", "is not null");
-                    }
                 }
             });
         }

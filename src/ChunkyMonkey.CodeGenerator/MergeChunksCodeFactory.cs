@@ -7,8 +7,7 @@ namespace ChunkyMonkey.CodeGenerator
     {
         internal string ForArrayProperty(PropertyInfo propertyInfo, TypeRule typeRule)
         {
-            var newInstanceCommand = typeRule.NewInstance(propertyInfo); // .Replace("{typeName}", propertyInfo.TypeName).Replace("[][0]", "[0]");
-
+            var newInstanceCommand = typeRule.NewInstance(propertyInfo);
 
             var sb = new StringBuilder();
             sb.AppendLine($"");
@@ -26,8 +25,7 @@ namespace ChunkyMonkey.CodeGenerator
 
         internal string ForNullableArrayProperty(PropertyInfo propertyInfo, TypeRule typeRule)
         {
-            var newInstanceCommand = typeRule.NewInstance(propertyInfo); // .Replace("{typeName}", pbropertyInfo.TypeName).Replace("[][0]", "[0]");
-
+            var newInstanceCommand = typeRule.NewInstance(propertyInfo); 
 
             var sb = new StringBuilder();
             sb.AppendLine($"");

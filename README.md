@@ -3,9 +3,18 @@
 ## Introduction
 
 ![ChunkyMonkey](https://raw.githubusercontent.com/andrew-gordon/ChunkyMonkey/main/media/ChunkMonkey.png)
-ChunkyMonkey is a C# code generator that generates code to split an object containing an array, collection, `List<T>`, `HashSet<T>`, `SortedSet<T>` or `Dictionary<K,V>` properties into chunks. It also provides the ability to merge the chunks back into a single object instance.
+ChunkyMonkey is a C# code generator that generates code to split an object containing collection properties into chunks. It also provides the ability to merge the chunks back into a single object instance.
 
-## Use Cases
+## Supported collections
+
+- Array
+- `List<T>`
+- `Collection<T>`
+- `Dictionary<K,V>` 
+- `HashSet<T>`
+- `SortedSet<T>` 
+
+## Use Case
 
 * You need to break down a large API request into smaller pieces - to avoid breaking the maximum request body size limit of your web server.
 
@@ -42,9 +51,10 @@ public T MergeChunks(IEnumerable<T> chunks)
 
 ## ```IEnumerable<T> Chunk(int chunkSize)```
 
-* Only partial classes can be chunked. This is because the code generates generates a partial class containing the methods above for each chunked class.
+* Only partial and non-static classes can be chunked. This is because the code generates generates a partial class containing the methods above for each chunked class.
 * Non-chunkable properties are repeated for each chunked instance.
 * If a collection (list, collection, array or dictionary) property's values are exhausted, subsequent chunks will contain an empty collection for the property value.
+* Only top-level collection properties are chunked. Nested properties are not chunked.
 
 
 ### Example of usage
@@ -126,7 +136,7 @@ This generated method merges a set of chunks back into a single instance.
     }
     ```
 
-    > :memo: **Note:** If your classes/DTOs live in a separate project, you should add the `Gord0.ChunkyMonkey.Attributes` package to that project. This package provides the `ChunkAttribute`. It's kept in a seperate package to avoid your project having a dependency on the code generator.
+    > :memo: **Note:** If your classes/DTOs live in a separate project, you should add the `Gord0.ChunkyMonkey.Attributes` package to that project. This package provides the `ChunkAttribute`. It's kept in a separate package .
 
 3. Build your project.
 

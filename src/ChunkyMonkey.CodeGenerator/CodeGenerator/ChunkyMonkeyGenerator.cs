@@ -280,9 +280,7 @@ namespace ChunkyMonkey.CodeGenerator.CodeGenerator
             }
             else
             {
-                var syntax = property.Type as ArrayTypeSyntax;
-
-                if (syntax != null)
+                if (property.Type is ArrayTypeSyntax syntax)
                 {
                     isArray = true;
                     arrayElementType = syntax.ElementType.ToString();

@@ -109,10 +109,24 @@ namespace ChunkyMonkey.CodeGenerator.CodeGenerator
                         chunkCodeFactory: chunkCodeFactory.ForArrayProperty,
                         MergeChunksCodeFactory: MergeChunksCodeFactory.ForArrayProperty,
                         newInstance: pi => $"Array.Empty<{pi.ArrayElementType}>()"),
+                    new TypeRule(
+                        name: "HashSet",
+                        typeMatcher: propertyName => propertyName.StartsWith("HashSet<"),
+                        lengthPropertyName: "Count",
+                        chunkCodeFactory: chunkCodeFactory.ForHashSetProperty,
+                        MergeChunksCodeFactory: MergeChunksCodeFactory.ForHashSetProperty,
+                        newInstance: pi => $"new {pi.TypeName}()"),
+                    new TypeRule(
+                        name: "SortedSet",
+                        typeMatcher: propertyName => propertyName.StartsWith("SortedSet<"),
+                        lengthPropertyName: "Count",
+                        chunkCodeFactory: chunkCodeFactory.ForSortedSetProperty,
+                        MergeChunksCodeFactory: MergeChunksCodeFactory.ForSortedSetProperty,
+                        newInstance: pi => $"new {pi.TypeName}()"),
                     //new TypeRule(
                     //    name: "Array",
                     //    typeMatcher: propertyName => propertyName.EndsWith("[]?"),
-                    //    lengthPropertyName: "Length",
+                    //    lengthPropertyName: "Length",br
                     //    chunkCodeFactory: chunkCodeFactory.ForNullableArrayProperty,
                     //    MergeChunksCodeFactory: MergeChunksCodeFactory.ForNullableArrayProperty,
                     //    newInstance: pi => $"Array.Empty<{pi.ArrayElementType}?>()"),

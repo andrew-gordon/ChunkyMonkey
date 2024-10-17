@@ -30,6 +30,43 @@ namespace ChunkyMonkey.CodeGenerator.CodeGenerator
             return sb.ToString();
         }
 
+        internal string ForHashSetProperty(PropertyInfo propertyInfo, TypeRule _)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine($"                {{");
+            sb.AppendLine($"                    if (this.{propertyInfo.Name} is not null)");
+            sb.AppendLine($"                    {{");
+            sb.AppendLine($"                        instance.{propertyInfo.Name} = this.{propertyInfo.Name}.Skip(i).Take(chunkSize).ToHashSet();");
+            sb.AppendLine($"                    }}");
+            sb.AppendLine($"                }}");
+            sb.AppendLine($"");
+            return sb.ToString();
+        }
+
+        internal string ForSortedSetProperty(PropertyInfo propertyInfo, TypeRule rule)
+        {
+            var sb = new StringBuilder();
+            var newInstanceCommand = rule.NewInstance(propertyInfo);
+
+            sb.AppendLine($"                {{");
+            sb.AppendLine($"                    if (this.{propertyInfo.Name} is not null)");
+            sb.AppendLine($"                    {{");
+            sb.AppendLine($"                        var items = this.{propertyInfo.Name}.Skip(i).Take(chunkSize);");
+            sb.AppendLine($"");
+            sb.AppendLine($"                        if (instance.{propertyInfo.Name} is null)");
+            sb.AppendLine($"                        {{");
+            sb.AppendLine($"                            instance.{propertyInfo.Name} = {newInstanceCommand};");
+            sb.AppendLine($"                        }}");
+            sb.AppendLine($"");
+            sb.AppendLine($"                        foreach(var item in items)");
+            sb.AppendLine($"                        {{");
+            sb.AppendLine($"                            instance.{propertyInfo.Name}.Add(item);");
+            sb.AppendLine($"                        }}");
+            sb.AppendLine($"                    }}");
+            sb.AppendLine($"                }}");
+            sb.AppendLine($"");
+            return sb.ToString();
+        }
 
 
 #pragma warning disable IDE0060 // Remove unused parameter
